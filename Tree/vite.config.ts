@@ -1,12 +1,24 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import tailwindcss from "@tailwindcss/vite";
 
-// @ts-expect-error process is a nodejs global
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    tailwindcss(),
+  ],
+
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.vue'],
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)) // 确保 alias 配置正确
+    }
+  },
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
